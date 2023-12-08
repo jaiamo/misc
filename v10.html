@@ -209,6 +209,16 @@
         hideBoxes(getCol(col));
         hideNumbers(getCol(col));
       });
+
+      box.addEventListner('touchstart', function () {
+        showBoxes(getCol(col));
+        showNumbers(getCol(col));
+      });
+
+      box.addEventListener('touchend', function() {
+        hideBoxes(getCol(col));
+        hideNumbers(getCol(col));
+      });
       
       gel.appendChild(box);
     } 
