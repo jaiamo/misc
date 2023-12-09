@@ -215,6 +215,17 @@
         showNumbers(getCol(col));
       });
 
+      box.addEventListener('touchmove', function(event) {
+        touch = event.touches[0];
+        if (touch.clientX < box.left || touch.clientX > box.right) {
+          hideBoxes(getCol(col));
+          hideNumbers(getCol(col));
+        } else {
+          showBoxes(getCol(col));
+          showNumbers(getCol(col));
+        }
+      });
+      
       box.addEventListener('touchend', function() {
         hideBoxes(getCol(col));
         hideNumbers(getCol(col));
