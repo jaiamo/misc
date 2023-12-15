@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base4 Capital LP</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-width: fit-content;
+      background-color: #fff;
+      color: #000;
+      margin: 0;
+    }
+ 
+    #container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.5rem
+    }
+
+    #gel {
+      display: grid;
+      grid-template-columns: repeat(20, minmax(1rem, 1.25rem));
+      grid-template-rows: repeat(4, 2.5rem);
+      gap: 1px;
+      margin: 2em auto;
+    }
+
+    .box {
+      background-color: #ccc;
+      color: #fff;
+      font-size: 0.75rem; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    h1 {
+      font-family: 'Mulish', sans-serif;
+      font-size: 2rem;
+      color: #000;
+    }
+    
+    #footer {
+      display: flex;
+      gap: 1px;
+      align-items: stretch;
+      color: #333;
+      margin-top: auto;
+      font-size: 0.75rem;
+    }
+    
+    .footer-box {
+      flex-grow: 0;
+      width: 1.25rem;
+      height: 1.6rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    #footer .footer-box:last-child {
+      flex-grow: 1;
+      width: auto;
+      padding-right: 1rem;
+      justify-content: flex-end;
+    }
+    
+    .highlight {
+      color:#000;
+    }
+    
+    #tagline {
+      padding: 0rem 1rem 0rem 1rem;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <img src="base4 logo.svg" alt="base4 logo" width="250">
+    <div id="gel"></div>
+    <div id="tagline">
+        <p>Investing in <span class="highlight">people</span> transforming <span class="highlight">biology</span> into <span class="highlight">information science</span></p>
+    </div>
+    <p>Menlo Park, CA</p>
+  </div>
+  
+  <div id="footer">
+    <div class="footer-box" style="background-color: #ccc;"></div>
+    <div class="footer-box" style="background-color: #558df6;"></div>
+    <div class="footer-box" style="background-color: #8bb3f8;"></div>
+    <div class="footer-box" style="background-color: #adc9fa;"></div>
+    <div class="footer-box" style="background-color: #2b69f5;"></div>
+    <div class="footer-box" style="background-color: #ccc;">&copy; <span id="currentYear"></span>. All rights reserved.</div>
+  </div>
+
+  <script>
+    const cols = 20;
+    const rows = 4;
+    const gelColors = Array.from({length: rows * cols}, () => Math.floor(Math.random() * 4));
+    const colors = ["#558df6", "#8bb3f8", "#adc9fa", "#2b69f5"];
+    const gel = document.getElementById('gel');
+    const contents = [
+      [3, 1, 2, 0],
+      [3, 0, 1, 3],
+      [3, 0, 1, 0],
+      [3, 2, 1, 3],
+      [3, 1, 2, 1],
+      [3, 1, 3, 2],
+      [3, 2, 0, 3],
+      [3, 1, 2, 3],
+      [3, 2, 2, 0],
+      [3, 0, 1, 0],
+      [3, 1, 3, 3],
+      [3, 2, 0, 0],
+      [3, 2, 1, 0],
+      [3, 1, 2, 0],
+      [3, 2, 1, 2],
+      [3, 2, 1, 3],
+      [3, 2, 2, 1],
+      [3, 2, 0, 3],
+      [3, 2, 1, 2],
+      [3, 0, 2, 1]
+    ];
+  
+    function getCol(col) {
+      const boxes = []
+      for (let i = 0; i < rows; i++) {
+        const index = i * cols + col;
+        boxes[i] = index; 
+      }
+      return boxes;
+    }
+
+    function getColBoundaries(col) {
+        let firstBox, firstBoxElem, rect;
+        firstBox = getCol(col)[0];
+        firstBoxElem = gel.children[firstBox];
+        rect = firstBoxElem.getBoundingClientRect();
+        return [rect.left, rect.right];
+    }
+
+    function showBoxes(boxes) {
+      for (let i = 0; i < boxes.length; i++) {
+        const box = gel.children[boxes[i]];
+        const colorNum = gelColors[boxes[i]]; 
+        box.style.transition = "background-color 0s";
+        box.style.backgroundColor = colors[colorNum];
+      }
+    }
+
+    function hideBoxes(boxes) {
+      for (let i = 0; i < boxes.length; i++) {
+        const box = gel.children[boxes[i]];
+        const colorNum = gelColors[boxes[i]]; 
+        box.textContent = "";
+        box.style.transition = "background-color 0.7s";
+        box.style.backgroundColor = '#ccc';
+      }
+    }
+
+    function showNumbers(boxes) {
+      for (let i = 0; i < boxes.length; i++) {
+        const box = gel.children[boxes[i]];
+        box.textContent = contents[boxes[i] % cols][Math.floor(boxes[i] / cols)];
+      }
+
+    }
+    function hideNumbers(boxes) {
+      for (let i = 0; i < boxes.length; i++) {
+        const box = gel.children[boxes[i]];
+        box.textContent = "";
+      }
+    }
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function runGel() {
+      for (let i = 0; i < cols; i++) {
+        showBoxes(getCol(i));
+        await delay(50);
+      }
+
+      await delay(1500);
+
+      for (let i = 0; i < cols; i++) {
+        hideBoxes(getCol(i));
+      }
+    }
+   
+    for (let i = 0; i < cols * rows; i++) {
+      const box = document.createElement('div');
+      box.className = 'box';
+      const col = i % cols;
+      
+      box.addEventListener('mouseover', function() {
+        showBoxes(getCol(col));
+        showNumbers(getCol(col));
+      });
+
+      box.addEventListener('mouseout', function() {
+        hideBoxes(getCol(col));
+        hideNumbers(getCol(col));
+      });
+      
+      gel.appendChild(box);
+    } 
+    
+    setTimeout(runGel, 1000);
+
+    gel.addEventListener('touchmove', function(event) {
+        const touch = event.touches[0];
+        let boxLeft, boxRight;
+        for (let i = 0; i < cols; i++) {
+            [boxLeft, boxRight] = getColBoundaries(i);
+            if (touch.clientX >= boxLeft && touch.clientX <= boxRight) {
+              showBoxes(getCol(i));
+              showNumbers(getCol(i));
+            } else {
+              hideBoxes(getCol(i));
+              hideNumbers(getCol(i));
+            }
+        } 
+      }
+    );
+
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    
+  </script>
+</body>
+</html>
